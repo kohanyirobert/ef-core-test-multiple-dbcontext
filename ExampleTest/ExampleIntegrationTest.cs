@@ -10,16 +10,17 @@ namespace ExampleTest;
 [Collection("IntegrationTests")]
 public class ExampleIntegrationTest(ExampleApplicationFactory app) : IClassFixture<ExampleApplicationFactory>
 {
+    // Example of what kind of exception message is thrown if the test fails due to misconfiguration (bad dependency versions).
+    // 
+    // > Services for database providers 'Microsoft.EntityFrameworkCore.Sqlite',
+    // > 'Microsoft.EntityFrameworkCore.InMemory' have been registered in the service provider.
+    // > Only a single database provider can be registered in a service provider.
+    // > If possible, ensure that Entity Framework is managing its service provider by removing the
+    // > all to 'UseInternalServiceProvider'. Otherwise, consider conditionally registering
+    // > the database provider, or maintaining one service provider per database provider.
     [Fact]
-    public async Task ExampleTest()
+    public async Task WhenTestReplacesDbContextOptions_NoErrorIsThrown()
     {
-        // Example of what kind of exception message is thrown in case this test fails:
-        // Services for database providers 'Microsoft.EntityFrameworkCore.Sqlite',
-        // 'Microsoft.EntityFrameworkCore.InMemory' have been registered in the service provider.
-        // Only a single database provider can be registered in a service provider.
-        // If possible, ensure that Entity Framework is managing its service provider by removing the
-        // all to 'UseInternalServiceProvider'. Otherwise, consider conditionally registering
-        // the database provider, or maintaining one service provider per database provider.
 
         using var scope = app.Services.CreateScope();
         await using var context = scope.ServiceProvider.GetRequiredService<ExampleContext>();
@@ -27,7 +28,7 @@ public class ExampleIntegrationTest(ExampleApplicationFactory app) : IClassFixtu
         context.Database.EnsureCreated();
 
         context.Cities.Add(new City { Name = "London" });
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         var cities = context.Cities.ToList();
         Assert.Single(cities);
