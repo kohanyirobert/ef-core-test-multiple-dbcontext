@@ -8,3 +8,7 @@ ExampleTest.ExampleIntegrationTest.ExampleTest (572ms): Error Message: System.In
       ving the call to 'UseInternalServiceProvider'. Otherwise, consider conditionally registering the database provider, or maintaining one servi
       ce provider per database provider.
 ```
+
+Compare these brances to see the difference:
+- main
+- fail
