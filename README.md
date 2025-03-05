@@ -7,5 +7,12 @@ ExampleTest.ExampleIntegrationTest.ExampleTest (572ms): Error Message: System.In
 ```
 
 Compare these brances to see the difference:
-- main
-- fail
+- `main`
+- `alternative`
+- `fail`
+
+Main differnces are:ű
+- `main` and `fail` uses 9.0.2 of Entity Framework Core dependencies
+- `alternative` is using 8.0.13
+- `fail` and `alternative` uses the "old way of doing things"
+- `main` the "new way" (see [related blog post](https://jackyasgar.net/solved-ef-8-to-9-migration-database-provider-exception/))
